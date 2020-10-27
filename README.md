@@ -1,5 +1,4 @@
 # speech-img-vid-generator
-Talking with images to video generator
 
 This does a few things together
 
