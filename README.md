@@ -14,7 +14,6 @@ Bing stores lots of images in base64, so may allow those and convert later.
 But for now, the ones we get are funny.
 
 # To Run
-
 You need a Google Service Account for the API.
 https://cloud.google.com/speech-to-text/docs/libraries
 
