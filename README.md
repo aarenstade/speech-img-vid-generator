@@ -10,7 +10,6 @@ This does a few things together
 6. Generate video file w/ ffmpeg
 
 # To Run
-
 You need a Google Service Account for the API.
 https://cloud.google.com/speech-to-text/docs/libraries
 
