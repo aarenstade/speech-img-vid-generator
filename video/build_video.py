@@ -2,7 +2,7 @@ import subprocess
 import os
 import wave
 from PIL import Image
-from make_frame import CreateFrame
+from video.make_frame import CreateFrame
 
 
 def get_total_time(audio_file):
@@ -20,23 +20,20 @@ def create_frames_dir(title, PATH):
     return path
 
 
-def create_frames(word_list, FRAMERATE, TOTAL_SEC, FRAMES_PATH):
-    print("writing frames before first word")
+def create_frames(word_list, FRAMERATE, TOTAL_SEC, FRAMES_PATH, PATH):
     (first_word, first_time), = word_list[0].items()
     first_word_frame = round(first_time * FRAMERATE)
     for i in range(first_word_frame):
         img = Image.new('RGB', (1280, 720))
         img.save(FRAMES_PATH + '/' + str(i).zfill(3) + '.jpg')
-    print("writing frames for each word")
     for i in range(len(word_list)):
         (word, time), = word_list[i].items()
-        print(word, time)
         try:
             (nextWord, nextTime), = word_list[i+1].items()
         except:
             nextTime = TOTAL_SEC
             pass
-        frame = CreateFrame(word)  # create collage
+        frame = CreateFrame(word, PATH)  # create collage
         start_frame = round(time * FRAMERATE)
         end_frame = round(nextTime * FRAMERATE)
         total_frames = end_frame - start_frame
@@ -55,10 +52,9 @@ def BuildVideo(PATH, title, audio_path, word_list):
     FRAMERATE = 12
     TOTAL_SEC = get_total_time(audio_path)
     FRAMES_PATH = create_frames_dir(title, PATH)
-    create_frames(word_list, FRAMERATE, TOTAL_SEC, FRAMES_PATH)
+    create_frames(word_list, FRAMERATE, TOTAL_SEC, FRAMES_PATH, PATH)
     OUTPUT_FILE = title + '.mp4'
     command = "ffmpeg -framerate " + str(FRAMERATE) + " -i " + FRAMES_PATH + \
-        "/%03d.jpg -i " + audio_path + " -strict -2 " + OUTPUT_FILE
-    print('generating video')
+        "/%03d.jpg -i " + audio_path + " -strict -2 " + PATH + '/' + OUTPUT_FILE
     subprocess.call(command, shell=True)
-    print('video created')
+    return PATH + '/' + OUTPUT_FILE
