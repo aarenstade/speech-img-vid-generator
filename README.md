@@ -9,10 +9,6 @@ This does a few things together
 5. Create frames for video following timecode of words
 6. Generate video file w/ ffmpeg
 
-At the moment the images are pretty random and not too specific.
-Bing stores lots of images in base64, so may allow those and convert later.
-But for now, the ones we get are funny.
-
 # To Run
 
 You need a Google Service Account for the API.
