@@ -20,7 +20,43 @@ def create_frames_dir(title, PATH):
     return path
 
 
+# TODO: rewrite create_frames to implement stop_time/end_time for each word
+
+# BLEND FRAMES
+
+# def create_frames(word_list, FRAMERATE, TOTAL_SEC, FRAMES_PATH, PATH):
+#     print('creating frames')
+#     (first_word, first_time), = word_list[0].items()
+#     first_word_frame = round(first_time * FRAMERATE)
+#     for i in range(first_word_frame):
+#         img = Image.new('RGB', (1280, 720))
+#         img.save(FRAMES_PATH + '/' + str(i).zfill(3) + '.jpg')
+#     for i in range(len(word_list)):
+#         (word, time), = word_list[i].items()
+#         try:
+#             (nextWord, nextTime), = word_list[i+1].items()
+#             (lastWord, lastTime), = word_list[i-1].items()
+#         except:
+#             nextTime = TOTAL_SEC
+#             lastWord = ''
+#             pass
+#         frame = CreateFrame(word + ' ' + lastWord, PATH)  # create collage
+#         start_frame = round(time * FRAMERATE)
+#         end_frame = round(nextTime * FRAMERATE)
+#         total_frames = end_frame - start_frame
+#         if(frame != None):
+#             for i in range(total_frames):
+#                 filename = str(start_frame + i).zfill(3) + '.jpg'
+#                 frame.save(FRAMES_PATH + '/' + filename)
+#         else:
+#             for i in range(total_frames):
+#                 filename = str(start_frame + i).zfill(3) + '.jpg'
+#                 frame = Image.new('RGB', (1280, 720))
+#                 frame.save(FRAMES_PATH + '/' + filename)
+
+
 def create_frames(word_list, FRAMERATE, TOTAL_SEC, FRAMES_PATH, PATH):
+    print('creating frames')
     (first_word, first_time), = word_list[0].items()
     first_word_frame = round(first_time * FRAMERATE)
     for i in range(first_word_frame):

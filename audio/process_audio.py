@@ -1,5 +1,5 @@
 from pydub import AudioSegment
-import wave
+import os
 
 
 def open_file(audio_path, file_type):
@@ -29,6 +29,7 @@ def convert_to_wav(audio_path, file_type):
     dot_index = str(audio_path).index('.')
     new_path = audio_path[:dot_index] + '_MONO.wav'
     sound.export(new_path, format="wav")
+    print("Audio Size: ", str(round(os.path.getsize(new_path) / 1048576)) + " MB")
     return new_path
 
 
