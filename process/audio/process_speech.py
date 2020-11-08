@@ -64,8 +64,8 @@ def return_result(result):
     return word_list
 
 
-def ProcessShortSpeech(filename):
-    print("SPEECH TO TEXT (short)", filename)
+def ProcessShortSpeech(logger, filename):
+    logger.info("SPEECH TO TEXT (short)", filename)
     start = time.time()
     client = speech.SpeechClient()
     with io.open(filename, mode='rb') as audio:
@@ -81,31 +81,31 @@ def ProcessShortSpeech(filename):
     )
 
     request = client.long_running_recognize(config=config, audio=audio)
-    print('AWAITING API RESPONSE')
+    logger.info('AWAITING API RESPONSE')
     result = request.result(timeout=90)
     end = time.time()
-    print("Speech to text took", round((end - start)), "seconds")
+    logger.info("Speech to text took", round((end - start)), "seconds")
     word_list = return_result(result)
     return word_list
 
 
-def upload_audio_file(filename, title):
+def upload_audio_file(logger, filename, title):
     client = storage.Client.from_service_account_json(
         json_credentials_path='/Users/aarenstade/google-credentials.json')
     bucket = client.get_bucket(bucket_name)
     blob = bucket.blob(filename)
-    print('Uploading Audio', filename)
+    logger.info('Uploading Audio', filename)
     start = time.time()
     blob.upload_from_filename(filename)
     end = time.time()
-    print('Uploaded in', round((end - start)), "seconds")
+    logger.info('Uploaded in', round((end - start)), "seconds")
     final_link = 'gs://' + bucket_name + "/" + filename
     return final_link
 
 
-def ProcessLongRunningSpeech(filename, title):
-    print('SPEECH TO TEXT (long runnning)', filename)
-    upload_file_uri = upload_audio_file(filename, title)
+def ProcessLongRunningSpeech(logger, filename, title):
+    logger.info('SPEECH TO TEXT (long runnning)', filename)
+    upload_file_uri = upload_audio_file(logger, filename, title)
     start = time.time()
     client = speech.SpeechClient()
     audio = speech.RecognitionAudio(uri=upload_file_uri)
@@ -119,20 +119,20 @@ def ProcessLongRunningSpeech(filename, title):
         request={"config": config, "audio": audio}
     )
     operation = client.long_running_recognize(config=config, audio=audio)
-    print('AWAITING LONG RUNNING API RESPONSE')
+    logger.info('AWAITING LONG RUNNING API RESPONSE')
     result = operation.result(timeout=90)
     end = time.time()
-    print("Speech to text took", round((end - start)), "seconds")
+    logger.info("Speech to text took", round((end - start)), "seconds")
     word_list = return_result(result)
     return word_list
 
 
-def ProcessSpeech(filename, title):
+def ProcessSpeech(logger, filename, title):
     sound = AudioSegment.from_wav(filename)
     duration = sound.duration_seconds
     if(duration > 60):
-        word_list = ProcessLongRunningSpeech(filename, title)
+        word_list = ProcessLongRunningSpeech(logger, filename, title)
         return word_list
     else:
-        word_list = ProcessShortSpeech(filename)
+        word_list = ProcessShortSpeech(logger, filename)
         return word_list

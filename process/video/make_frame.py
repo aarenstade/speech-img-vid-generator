@@ -6,7 +6,7 @@ import uuid
 import os
 import time
 import math
-import utils.log as log
+from utils.log import Log_Frame
 
 CHROME_DRIVER_PATH = '/Users/aarenstade/Documents/chromedriver'
 
@@ -44,7 +44,7 @@ def create_imgs_dir(path):
         return False
 
 
-def download_images(images, path):
+def download_images(logger, images, path):
     for image in images:
         if(image != None):
             filename = path + "/" + str(uuid.uuid4()) + ".jpg"
@@ -53,7 +53,7 @@ def download_images(images, path):
             else:
                 request = requests.get(image, stream=True)
                 if not request.ok:
-                    print(request)
+                    logger.error(request)
                 with open(filename, 'wb') as imgFile:
                     for block in request.iter_content(1024):
                         if not block:
@@ -121,7 +121,7 @@ def create_collage(path):
         return final_img
 
 
-def CreateFrame(query, path):
+def CreateFrame(logger, query, path):
     start = time.time()
     query = query.split(' ')
     query = '+'.join(query)
@@ -129,22 +129,21 @@ def CreateFrame(query, path):
     query = query.replace('/', '')
     query = query.replace("'", '')
     query = query.replace('"', '')
-    print(query)
     path = path + '/src/' + query
     newDir = create_imgs_dir(path)
     if(newDir):
         images = get_images(query)
         if(len(images) > 0):
-            download_images(images, path)
+            download_images(logger, images, path)
             img = create_collage(path)
             end = time.time()
-            log.Log_Frame(query, (end - start))
+            Log_Frame(logger, query, (end - start))
             return img
         else:
-            print('no images found')
+            logger.error('no images found')
             return None
     else:
         img = create_collage(path)
         end = time.time()
-        log.Log_Frame(query, (end - start))
+        Log_Frame(logger, query, (end - start))
         return img
