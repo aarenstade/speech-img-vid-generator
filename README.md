@@ -16,6 +16,11 @@ https://cloud.google.com/speech-to-text/docs/libraries
 Add the credential JSON file to the GOOGLE_APPLICATION_CREDENTIALS path.
 https://cloud.google.com/docs/authentication/getting-started
 
+Download the Chrome Driver
+https://chromedriver.chromium.org/
+
+Modify chrome driver path variable in video/make_frame.py
+
 Pip install the libraries you dont have.
 Make sure ffmpeg is installed.
 
