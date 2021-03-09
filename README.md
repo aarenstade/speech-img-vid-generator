@@ -13,6 +13,10 @@ This does a few things together
 You need a Google Service Account for the API.
 https://cloud.google.com/speech-to-text/docs/libraries
 
-You may need to pip install the libraries you dont have.
+Add the credential JSON file to the GOOGLE_APPLICATION_CREDENTIALS path.
+https://cloud.google.com/docs/authentication/getting-started
 
-Then, run python3 handler.py
+Pip install the libraries you dont have.
+Make sure ffmpeg is installed.
+
+Then, run python3 handler.py and enter the video title & audio file path.
